@@ -1,13 +1,12 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { createStore } from 'vuex'
 
-
-Vue.use(Vuex)
-
-/* eslint-disable no-new */
-const store = new Vuex.Store({
+export default createStore({
+  state: {
+  },
+  mutations: {
+  },
+  actions: {
+  },
   modules: {
   }
 })
-
-export default store

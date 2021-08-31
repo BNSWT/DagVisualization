@@ -1,14 +1,9 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 import App from './App.vue'
-import vuetify from './plugins/vuetify'
 import router from './router'
 import store from './store'
+import installElementPlus from './plugins/element'
 
-Vue.config.productionTip = false
-
-new Vue({
-  vuetify,
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+const app = createApp(App)
+installElementPlus(app)
+app.use(store).use(router).mount('#app')

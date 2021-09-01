@@ -1,6 +1,5 @@
-
 <template>
-  <el-container>
+   <el-container>
     <el-header height="100%">
       <el-menu :default-active="activeIndex" router="true" class="el-menu-demo" mode="horizontal" @select="handleSelect">
         <el-menu-item index="/">首页</el-menu-item>
@@ -10,31 +9,9 @@
       </el-menu>
     </el-header>
     <el-main height="100%">
-      <img alt="Vue logo" src="../assets/logo.png">
-      <h1>数据结构课程设计</h1>
-      <h3>1953793 周雨杨</h3>
+      <p>Dag here</p>
     </el-main>
   </el-container>
-
 </template>
 
-<script>
-  export default {
-    data() {
-      return {
-        activeIndex: '/',
-        activeIndex2: '/dag',
-        activeIndex3: '/about'
-      };
-    },
-    methods: {
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-      }
-    }
-  }
-</script>
 
-<style>
-
-</style>

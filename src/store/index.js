@@ -1,92 +1,36 @@
 import { createStore } from 'vuex'
 
-const dagModule = {
-    state: {
-        name: "name",
-        id: 2,
-        imgContent: "",
-        pos_x: 300,
-        pos_y: 400,
-        type: 'constant',
-        in_ports: [0, 1, 2, 3, 4],
-        out_ports: [0, 1, 2, 3, 4]
+
+export const JSONFromService = { "edges": [{ "src_node_id": 100, "src_output_idx": 0, "dst_node_id": 101, "dst_input_idx": 0, "id": 10 }], "nodes": [{ "pos_x": 323.50000000000034, "pos_y": 117.00000000000011, "name": "服务端拿取的数据", "iconClassName": "el-icon-collection-tag", "form": { "details": "普通节点的内容balabala", "createTime": "Wed Apr 29 2020" }, "id": 100, "in_ports": [0], "out_ports": [0] }, { "pos_x": 198.75000000000023, "pos_y": 271.0000000000002, "name": "普通节点", "iconClassName": "el-icon-collection-tag", "form": { "details": "普通节点的内容balabala", "createTime": "Wed Apr 29 2020" }, "id": 101, "in_ports": [0], "out_ports": [0] }] }
+export const nodesBasic = [{
+    name: '普通节点',
+    iconClassName: 'el-icon-collection-tag',
+    form: { details: '普通节点的内容balabala', createTime: '' }
+}, {
+    name: '动态节点',
+    iconClassName: 'el-icon-loading',
+    form: { details: '动态节点的内容balabala', createTime: '' }
+}, {
+    name: '自定义节点',
+    form: { details: '自定义节点的内容balabala', createTime: '' },
+    iconClassName: 'el-icon-magic-stick',
+    nodeStyle: {
+        "border": "2px solid orange",
+        "border-radius": 0,
+        "height": "40px"
     },
-    mutations: {
-        dragPre(e, i) {
-            // 准备拖动节点
-            this.setInitRect(); // 初始化画板坐标
-            this.currentEvent = "dragPane"; // 修正行为
-            this.choice.index = i;
-            this.setDragFramePosition(e);
-        },
-        dragIng(e) {
-            if (this.currentEvent === "dragPane") {
-                this.setDragFramePosition(e);
-                // 模拟框随动
-            }
-        },
-        setDragFramePosition(e) {
-            const x = e.x - this.initPos.left; // 修正拖动元素坐标
-            const y = e.y - this.initPos.top;
-            this.dragFrame = { posX: x - 90, posY: y - 15 };
-        },
-        dragEnd(e) {
-            // 拖动结束
-            if (this.currentEvent === "dragPane") {
-                this.dragFrame = { dragFrame: false, posX: 0, posY: 0 };
-                this.setPanePosition(e); // 设定拖动后的位置
-            }
-            if (this.currentEvent === "dragLink") {
-                this.setDragLinkPostion(e);
-            }
-            this.currentEvent = null; // 清空事件行为
-        },
-        setPanePosition(e) {
-            const x = e.x - this.initPos.left - 90;
-            const y = e.y - this.initPos.top - 15;
-            const i = this.choice.index;
-            this.DataAll[i].translate = { left: x, top: y };
-        },
-        setInitRect() {
-            let { left, top } = document
-                .getElementById("svgContent")
-                .getBoundingClientRect();
-            this.initPos = { left, top }; // 修正坐标
-        },
-        linkPre(e, i) {
-            this.setInitRect();
-            this.currentEvent = "dragLink";
-            this.choice.index = i;
-            this.setDragLinkPostion(e, true);
-            e.preventDefault();
-            e.stopPropagation();
-        },
-        linkEnd(e, i) {
-            if (this.currentEvent === "dragLink") {
-                this.DataAll[this.choice.index].linkTo.push({ id: i });
-                this.DataAll.find(item => item.id === i).parentNode = 1;
-            }
-            this.currentEvent = null;
-        },
-        setDragLinkPostion(e, init) {
-            // 定位连线
-            const x = e.x - this.initPos.left;
-            const y = e.y - this.initPos.top;
-            if (init) {
-                this.dragLink = Object.assign({}, this.dragLink, {
-                    fromX: x,
-                    fromY: y
-                });
-            }
-            this.dragLink = Object.assign({}, this.dragLink, { toX: x, toY: y });
-        },
+    iconStyle: {
+        "background": "orange"
     }
-}
+}, {
+    name: '拖入右侧',
+    form: { details: '节点内容自由编辑', createTime: '' }
+}]
 
 
 export default createStore({
     state: {},
     mutations: {},
     actions: {},
-    modules: { dagModule }
+    modules: {}
 })

@@ -19,6 +19,7 @@
                <el-switch v-model="hobby" active-text="兴趣网络"></el-switch>
           </el-aside>
           <el-main>
+              <dag-basic></dag-basic>
           </el-main>
       </el-container>
     </el-main>
@@ -27,7 +28,11 @@
 </template>
 
 <script>
+import DagBasic from '@/components/DagBasic.vue'
   export default {
+    components:{
+        DagBasic
+    },
     data() {
       return {
         activeIndex: '/',

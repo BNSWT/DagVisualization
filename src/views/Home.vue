@@ -14,8 +14,7 @@
         </el-carousel-item>
       </el-carousel>
       <img alt="Vue logo" src="../assets/logo.png">
-      <h1>数据结构课程设计</h1>
-      <h3>1953793 周雨杨</h3>
+      <h1>Home Page</h1>
     </el-main>
   </el-container>
 

@@ -1,6 +1,7 @@
 
 <template>
-<div>
+<div >
+  <el-card>
   <!-- DAG-Diagram主体 -->
   <DAGBoard
       ref="DAGBoard"
@@ -17,6 +18,18 @@
       :pos_x="busValue.pos_x"
       :pos_y="busValue.pos_y"
   />
+  </el-card>
+  <el-row>
+      <el-col :span="10">
+      </el-col>
+      <el-col :span="12" align="right">
+        <el-button @mousedown="dragIt({
+    name: '完成子工程',
+    iconClassName: 'el-icon-collection-tag',
+    form: { details: '普通节点的内容balabala', createTime: '' }
+})" type="primary" icon="el-icon-plus" circle aria-setsize="10px"></el-button>
+        </el-col>
+  </el-row>
 </div>
 </template>
 
@@ -41,9 +54,25 @@
           nodes: [{
             "id": 1,                             // 节点id
             "in_ports": [ 0 ],                   // 入口下标
-            "name": "NODE_PARENT",               // 节点名称
+            "name": "得到需求文档",               // 节点名称
             "out_ports": [ 0, 1 ],               // 出口下标
             "pos_x": 157,                        // 节点坐标 距离左侧
+            "pos_y": 40,                        // 节点坐标 距离顶部
+            "nodeStyle": {                       /* 非必要 节点样式 */ 
+              
+            },
+            "iconStyle": {                       /* 非必要 节点icon样式 */
+              
+            },
+            "iconClassName": "el-icon-link",     /* 非必要  节点icon的类名 */
+            "nameDescribe": "项目的根基",           /* 非必要 气泡内容 */               
+          },
+          {
+            "id": 2,                             // 节点id
+            "in_ports": [ 0 ],                   // 入口下标
+            "name": "完成设计文档",               // 节点名称
+            "out_ports": [ 0, 1, 2],               // 出口下标
+            "pos_x": 257,                        // 节点坐标 距离左侧
             "pos_y": 120,                        // 节点坐标 距离顶部
             "nodeStyle": {                       /* 非必要 节点样式 */ 
               
@@ -52,15 +81,15 @@
               
             },
             "iconClassName": "el-icon-link",     /* 非必要  节点icon的类名 */
-            "nameDescribe": "气泡内容",           /* 非必要 气泡内容 */               
+            "nameDescribe": "项目的设计至关重要",           /* 非必要 气泡内容 */               
           },
           {
-            "id": 2,                             // 节点id
+            "id": 3,                             // 节点id
             "in_ports": [ 0 ],                   // 入口下标
-            "name": "NODE_CHILD",               // 节点名称
-            "out_ports": [ 0, 1 ],               // 出口下标
-            "pos_x": 257,                        // 节点坐标 距离左侧
-            "pos_y": 220,                        // 节点坐标 距离顶部
+            "name": "完成子工程",               // 节点名称
+            "out_ports": [ 0],               // 出口下标
+            "pos_x": 57,                        // 节点坐标 距离左侧
+            "pos_y":180,                        // 节点坐标 距离顶部
             "nodeStyle": {                       /* 非必要 节点样式 */ 
               
             },
@@ -68,16 +97,136 @@
               
             },
             "iconClassName": "el-icon-link",     /* 非必要  节点icon的类名 */
-            "nameDescribe": "气泡内容",           /* 非必要 气泡内容 */               
-          }],
+            "nameDescribe": "工程的一个子项目",           /* 非必要 气泡内容 */   
+          },
+          {
+            "id": 4,                             // 节点id
+            "in_ports": [ 0 ],                   // 入口下标
+            "name": "完成子工程",               // 节点名称
+            "out_ports": [ 0],               // 出口下标
+            "pos_x": 217,                        // 节点坐标 距离左侧
+            "pos_y": 280,                        // 节点坐标 距离顶部
+            "nodeStyle": {                       /* 非必要 节点样式 */ 
+              
+            },
+            "iconStyle": {                       /* 非必要 节点icon样式 */
+              
+            },
+            "iconClassName": "el-icon-link",     /* 非必要  节点icon的类名 */
+            "nameDescribe": "工程的一个子项目",           /* 非必要 气泡内容 */   
+          },
+          {
+            "id": 5,                             // 节点id
+            "in_ports": [ 0 ],                   // 入口下标
+            "name": "完成子工程",               // 节点名称
+            "out_ports": [ 0],               // 出口下标
+            "pos_x": 500,                        // 节点坐标 距离左侧
+            "pos_y": 190,                        // 节点坐标 距离顶部
+            "nodeStyle": {                       /* 非必要 节点样式 */ 
+              
+            },
+            "iconStyle": {                       /* 非必要 节点icon样式 */
+              
+            },
+            "iconClassName": "el-icon-link",     /* 非必要  节点icon的类名 */
+            "nameDescribe": "工程的一个子项目",           /* 非必要 气泡内容 */   
+          },
+          {
+            "id": 6,                             // 节点id
+            "in_ports": [ 0 ],                   // 入口下标
+            "name": "完成子工程",               // 节点名称
+            "out_ports": [ 0],               // 出口下标
+            "pos_x": 457,                        // 节点坐标 距离左侧
+            "pos_y": 350,                        // 节点坐标 距离顶部
+            "nodeStyle": {                       /* 非必要 节点样式 */ 
+              
+            },
+            "iconStyle": {                       /* 非必要 节点icon样式 */
+              
+            },
+            "iconClassName": "el-icon-link",     /* 非必要  节点icon的类名 */
+            "nameDescribe": "工程的一个子项目",           /* 非必要 气泡内容 */   
+          },
+          {
+            "id": 7,                             // 节点id
+            "in_ports": [ 0, 1 ],                   // 入口下标
+            "name": "完成子工程",               // 节点名称
+            "out_ports": [ 0],               // 出口下标
+            "pos_x": 20,                        // 节点坐标 距离左侧
+            "pos_y": 420,                        // 节点坐标 距离顶部
+            "nodeStyle": {                       /* 非必要 节点样式 */ 
+              
+            },
+            "iconStyle": {                       /* 非必要 节点icon样式 */
+              
+            },
+            "iconClassName": "el-icon-link",     /* 非必要  节点icon的类名 */
+            "nameDescribe": "工程的一个子项目",           /* 非必要 气泡内容 */   
+          },],
           edges: [{
             "dst_input_idx": 0,
             "dst_node_id": 2,
             "id":1,
             "src_node_id":1,
             "src_output_idx":0,
-            "style":{}
-          }]
+            "style":{},
+            "value":10,
+          },
+          {
+            "dst_input_idx": 0,
+            "dst_node_id": 3,
+            "id":2,
+            "src_node_id":2,
+            "src_output_idx":0,
+            "style":{},
+            "value":12,
+          },
+          {
+            "dst_input_idx": 0,
+            "dst_node_id": 4,
+            "id":3,
+            "src_node_id":2,
+            "src_output_idx":1,
+            "style":{},
+            "value":8,
+          },
+          {
+            "dst_input_idx": 0,
+            "dst_node_id": 5,
+            "id":4,
+            "src_node_id":2,
+            "src_output_idx":2,
+            "style":{},
+            "value":10,
+          },
+          {
+            "dst_input_idx": 0,
+            "dst_node_id": 6,
+            "id":5,
+            "src_node_id":5,
+            "src_output_idx":0,
+            "style":{},
+            "value":10,
+          },
+           {
+            "dst_input_idx": 0,
+            "dst_node_id": 7,
+            "id":6,
+            "src_node_id":3,
+            "src_output_idx":0,
+            "style":{},
+            "value":13,
+          },
+          {
+            "dst_input_idx": 1,
+            "dst_node_id": 7,
+            "id":6,
+            "src_node_id":4,
+            "src_output_idx":0,
+            "style":{},
+            "value":4,
+          },
+          ]
         },
         // 以下为拖拽方式添加节点必须内容
         busValue: {
@@ -233,6 +382,7 @@
       this.copyContent = []
     },
     updateDAG (data, action, id) {
+      this.$emit("updateDAG", data)
       console.log(...arguments)
       console.log(JSON.stringify(arguments[0]))
       switch (action) {
@@ -299,7 +449,7 @@
       if (sessionStorage["dragDes"]) {
         dragDes = JSON.parse(sessionStorage["dragDes"]);
       }
-      if (dragDes && dragDes.drag && e.toElement.id === "svgContent") {
+      if (dragDes && dragDes.drag) {
         const pos_x =
           (e.offsetX - 90 - (sessionStorage["svg_left"] || 0)) /
           (sessionStorage["svgScale"] || 1); // 参数修正
@@ -318,7 +468,7 @@
         };
         this.yourJSONDataFillThere.nodes.push({
           ...params.desp,
-          id: this.yourJSONDataFillThere.nodes.length + 100, // 这里注意, 新增的id一定不能重复, 建议id交由后端处理
+          id: this.yourJSONDataFillThere.nodes.length, // 这里注意, 新增的id一定不能重复, 建议id交由后端处理
           in_ports: [0],
           out_ports: [0]
         })

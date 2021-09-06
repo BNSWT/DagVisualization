@@ -21,7 +21,7 @@
 </template>
 
 <script>
- import {RelationshipDefault} from '@/components/RelationshipDefault'
+ import {RelationshipDefault} from '@/data/RelationshipDefault'
   export default {
     name:"dag",
     // components: {

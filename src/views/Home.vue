@@ -8,13 +8,37 @@
       </el-menu>
     </el-header>
     <el-main height="100%">
-      <el-carousel :interval="4000" type="card" height="200px">
-        <el-carousel-item v-for="item in 6" :key="item">
-          <h3 class="medium">{{ item }}</h3>
+      <el-carousel :interval="4000" type="card" height="400px">
+        <el-carousel-item>
+          <div class="carousel">
+            <img
+            src='@/assets/carousel/1.png'/>
+          </div>
+        </el-carousel-item>
+        <el-carousel-item>
+          <img
+          src='@/assets/carousel/5.png'/>
+        </el-carousel-item>
+        <el-carousel-item>
+          <img
+          src='@/assets/carousel/1.png'/>
+        </el-carousel-item>
+        <el-carousel-item>
+          <img
+          src='@/assets/carousel/5.png'/>
+        </el-carousel-item>
+        <el-carousel-item>
+          <img
+          src='@/assets/carousel/1.png'/>
+        </el-carousel-item>
+        <el-carousel-item>
+          <img
+          src='@/assets/carousel/5.png'/>
         </el-carousel-item>
       </el-carousel>
-      <img alt="Vue logo" src="../assets/logo.png">
-      <h1>Home Page</h1>
+      <img alt="Vue logo" src="../assets/logo.png" class="image">
+      <h1>数据结构课程设计</h1>
+      <h3>1953793 周雨杨</h3>
     </el-main>
   </el-container>
 
@@ -38,8 +62,12 @@
 </script>
 
 <style>
+.img{
+  max-width: 100%;
+  max-height: 100%;
+}
 .el-carousel__item h3 {
-    color: #475669;
+    color: green;
     font-size: 14px;
     opacity: 0.75;
     line-height: 200px;
@@ -47,11 +75,11 @@
   }
 
   .el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
+    background-color: green
   }
 
   .el-carousel__item:nth-child(2n+1) {
-    background-color: #d3dce6;
+    background-color: green;
   }
 </style>
 

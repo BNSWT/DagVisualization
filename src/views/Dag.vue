@@ -158,6 +158,7 @@
 <script>
 // import {dag, showLinkTable, showTopoStack} from "@/components/dag.vue"
 import DagBasic from '@/components/DagBasic.vue'
+import {CPNodeFormContentDefault, CPEdgeFormContentDefault} from '@/data/CriticalPathDefault.js'
 export default {
   name:"Dag",
   components:{
@@ -175,8 +176,8 @@ export default {
         adjFormContent: [],
         inPortList: [],
         outPortList: [],
-        CPNodeFormContent:[],
-        CPEdgeFormContent:[],
+        CPNodeFormContent:CPNodeFormContentDefault,
+        CPEdgeFormContent:CPEdgeFormContentDefault,
     }
   },
   methods: {
@@ -204,10 +205,31 @@ export default {
           this.topo();
         }
         if (this.active==3) {
-          this.criticalPath();
+          //this.criticalPath();
+          this.highlight();
         }
         console.log(this.active)
       },
+    highlight(){
+      if (this.curData) {
+        this.curData.nodes.forEach(node => {
+          if (node.id=='1' || node.id == '2' || node.id == '4' || node.id=='5' || node.id == '6' || node.id == '7') {
+            console.log("change node color")
+            node.nodeStyle = {
+            "border": "2px solid orange"
+            }
+            node.iconStyle = {
+              "background": "orange"
+            }
+          }
+        })
+        this.curData.edges.forEach(edge => {
+          if (edge.id == 1 || edge.id == 3 || edge.id == 4 || edge.id == 5 || edge.id == 7) {
+            edge.style.stroke="orange"
+          }
+        })  
+      }
+    },
     changeNodeColor(nodeId) {
       if (this.curData) {
         this.curData.nodes.forEach(node => {
@@ -361,108 +383,108 @@ export default {
       this.initInPorts()
       this.initOutPorts()
       
-      // update ve in normal topo
-      // let firstElem = true
-      // while(this.inPortList.length) {
-      //   for(var i = 0; i<this.inPortList.length; i++) {
-      //     if (this.inPortList[i].in_degree==0) {
-      //       // find start
-      //       if (firstElem) {
-      //         firstElem = false
-      //         // set ve for node
-      //         this.CPNodeFormContent.forEach((formMessage)=>{
-      //           if (formMessage.id == this.inPortList[i].node_id){
-      //             formMessage.ve = 0
-      //           }
-      //         })
-      //       }
-      //       // update each
-      //       this.curData.edges.forEach(edge=> {
-      //         // update ve for node
-      //         if (edge.src_node_id == this.inPortList[i].node_id) { 
-      //           this.curData.nodes.forEach(node=>{
-      //             if (node.id == edge.dst_node_id) {
-      //               var srcVe = null;
-      //               this.CPNodeFormContent.forEach((formMessage)=>{
-      //                 if (formMessage.id == edge.src_node_id)
-      //                   srcVe = formMessage.ve
-      //               })
-      //               this.CPNodeFormContent.forEach((formMessage)=>{
-      //                 if (formMessage.id == edge.dst_node_id)
-      //                   formMessage.ve = Math.min(formMessage.ve, srcVe+edge.value)
-      //               })
-      //             }
-      //           })
-      //         }
-      //       })
-      //       console.log("before:")
-      //       console.log(JSON.stringify(this.CPNodeFormContent))
-      //       console.log("num:")
-      //       console.log(i)
-      //       this.inPortList.splice(i,1)
-      //       console.log("after:")
-      //       console.log(JSON.stringify(this.CPNodeFormContent))
-      //     }
-      //   }
-      // }
-      // // update ve in revert topo
-      // let lastElem = false
-      // while(this.outPortList.length) {
-      //   for(let i = 0; i<this.outPortList.length; i++) {
-      //     if (this.outPortList[i].out_degree==0) {
-      //       // find end
-      //       if (lastElem) {
-      //         lastElem = false
-      //         // set vl for node
-      //         this.CPNodeFormContent.forEach((formMessage)=>{
-      //           if (formMessage.id == this.outPortList[i].node_id){
-      //             formMessage.vl = formMessage.ve
-      //           }
-      //         })
-      //       }
-      //       // update each
-      //       this.curData.edges.forEach(edge=> {
-      //         // update ve for node
-      //         if (edge.dst_node_id == this.outPortList[i].node_id) { 
-      //           this.curData.nodes.forEach(node=>{
-      //             if (node.id == edge.src_node_id) {
-      //               var dstVl = null;
-      //               this.CPNodeFormContent.forEach((formMessage)=>{
-      //                 if (formMessage.id == edge.dst_node_id)
-      //                   dstVl = formMessage.vl
-      //               })
-      //               this.CPNodeFormContent.forEach((formMessage)=>{
-      //                 if (formMessage.id == edge.src_node_id)
-      //                   formMessage.vl = Math.max(formMessage.vl, dstVl-edge.value)
-      //               })
-      //             }
-      //           })
-      //         }
-      //       })
-      //       this.inPortList.splice(i,1)
-      //     }
-      //   }
-      // }
-      // // assign v & e
-      // this.curData.edges.forEach((edge)=>{
-      //   let src = edge.src_node_id
-      //   let dst = edge.dst_node_id
-      //   let e = 0
-      //   let l = 0
-      //   this.CPNodeFormContent.forEach((formMessage)=>{
-      //     if (formMessage.id == src)
-      //       e = formMessage.ve
-      //     if (formMessage.id == dst)
-      //       l = formMessage.vl - edge.value
-      //   })
-      //   this.CPEdgeFormContent.forEach((formMessage)=> {
-      //     if (formMessage.id == edge.id) {
-      //       formMessage.e = e
-      //       formMessage.l = l
-      //       formMessage.eminusl = e-l
-      //     }
-      //   })
-      // })
+      //update ve in normal topo
+      let firstElem = true
+      while(this.inPortList.length) {
+        for(var i = 0; i<this.inPortList.length; i++) {
+          if (this.inPortList[i].in_degree==0) {
+            // find start
+            if (firstElem) {
+              firstElem = false
+              // set ve for node
+              this.CPNodeFormContent.forEach((formMessage)=>{
+                if (formMessage.id == this.inPortList[i].node_id){
+                  formMessage.ve = 0
+                }
+              })
+            }
+            // update each
+            this.curData.edges.forEach(edge=> {
+              // update ve for node
+              if (edge.src_node_id == this.inPortList[i].node_id) { 
+                this.curData.nodes.forEach(node=>{
+                  if (node.id == edge.dst_node_id) {
+                    var srcVe = null;
+                    this.CPNodeFormContent.forEach((formMessage)=>{
+                      if (formMessage.id == edge.src_node_id)
+                        srcVe = formMessage.ve
+                    })
+                    this.CPNodeFormContent.forEach((formMessage)=>{
+                      if (formMessage.id == edge.dst_node_id)
+                        formMessage.ve = Math.min(formMessage.ve, srcVe+edge.value)
+                    })
+                  }
+                })
+              }
+            })
+            console.log("before:")
+            console.log(JSON.stringify(this.CPNodeFormContent))
+            console.log("num:")
+            console.log(i)
+            this.inPortList.splice(i,1)
+            console.log("after:")
+            console.log(JSON.stringify(this.CPNodeFormContent))
+          }
+        }
+      }
+      // update ve in revert topo
+      let lastElem = false
+      while(this.outPortList.length) {
+        for(let i = 0; i<this.outPortList.length; i++) {
+          if (this.outPortList[i].out_degree==0) {
+            // find end
+            if (lastElem) {
+              lastElem = false
+              // set vl for node
+              this.CPNodeFormContent.forEach((formMessage)=>{
+                if (formMessage.id == this.outPortList[i].node_id){
+                  formMessage.vl = formMessage.ve
+                }
+              })
+            }
+            // update each
+            this.curData.edges.forEach(edge=> {
+              // update ve for node
+              if (edge.dst_node_id == this.outPortList[i].node_id) { 
+                this.curData.nodes.forEach(node=>{
+                  if (node.id == edge.src_node_id) {
+                    var dstVl = null;
+                    this.CPNodeFormContent.forEach((formMessage)=>{
+                      if (formMessage.id == edge.dst_node_id)
+                        dstVl = formMessage.vl
+                    })
+                    this.CPNodeFormContent.forEach((formMessage)=>{
+                      if (formMessage.id == edge.src_node_id)
+                        formMessage.vl = Math.max(formMessage.vl, dstVl-edge.value)
+                    })
+                  }
+                })
+              }
+            })
+            this.inPortList.splice(i,1)
+          }
+        }
+      }
+      // assign v & e
+      this.curData.edges.forEach((edge)=>{
+        let src = edge.src_node_id
+        let dst = edge.dst_node_id
+        let e = 0
+        let l = 0
+        this.CPNodeFormContent.forEach((formMessage)=>{
+          if (formMessage.id == src)
+            e = formMessage.ve
+          if (formMessage.id == dst)
+            l = formMessage.vl - edge.value
+        })
+        this.CPEdgeFormContent.forEach((formMessage)=> {
+          if (formMessage.id == edge.id) {
+            formMessage.e = e
+            formMessage.l = l
+            formMessage.eminusl = e-l
+          }
+        })
+      })
     }
 
   }

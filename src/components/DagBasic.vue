@@ -1,6 +1,9 @@
 
 <template>
-<div >
+<div
+    @mousedown="startNodesBus($event)"
+    @mousemove="moveNodesBus($event)"
+    @mouseup="endNodesBus($event)">
   <el-card>
   <!-- DAG-Diagram主体 -->
   <DAGBoard
@@ -220,7 +223,7 @@
           {
             "dst_input_idx": 1,
             "dst_node_id": 7,
-            "id":6,
+            "id":7,
             "src_node_id":4,
             "src_output_idx":0,
             "style":{},

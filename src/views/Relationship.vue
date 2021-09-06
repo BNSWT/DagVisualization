@@ -29,7 +29,7 @@
                     <el-input v-model="personName" placeholder="姓名"></el-input>
                   </el-form-item>
                   <el-form-item>
-                  <el-button @click="search" type="primary">查找可能认识的人</el-button>
+                  <el-button @click="onSubmit" type="primary">查找可能认识的人</el-button>
                   </el-form-item>
                 </el-form>
               </div>
@@ -45,33 +45,17 @@
                   </el-row>
                   <el-row>
                      <el-collapse v-model="activeNames" @change="handleChange">
-                      <el-collapse-item title="一致性 Consistency" name="1">
-                        <div>
-                          与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；
-                        </div>
-                        <div>
-                          在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。
-                        </div>
-                      </el-collapse-item>
-                      <el-collapse-item title="反馈 Feedback" name="2">
-                        <div>控制反馈：通过界面样式和交互动效让用户可以清晰的感知自己的操作；</div>
-                        <div>页面反馈：操作后，通过页面元素的变化清晰地展现当前状态。</div>
-                      </el-collapse-item>
-                      <el-collapse-item title="效率 Efficiency" name="3">
-                        <div>简化流程：设计简洁直观的操作流程；</div>
-                        <div>清晰明确：语言表达清晰且表意明确，让用户快速理解进而作出决策；</div>
-                        <div>
-                          帮助用户识别：界面简单直白，让用户快速识别而非回忆，减少用户记忆负担。
+                     <div 
+                     v-for="(item,i) in recommandList"
+                     :key="item.name">
+                      <el-collapse-item :title="item.name" :name='i'>
+                        <div
+                        v-for="commonField in item.commonFields"
+                        :key="commonField">
+                          {{commonField}}
                         </div>
                       </el-collapse-item>
-                      <el-collapse-item title="可控 Controllability" name="4">
-                        <div>
-                          用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；
-                        </div>
-                        <div>
-                          结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。
-                        </div>
-                      </el-collapse-item>
+                    </div>
                     </el-collapse>
                   </el-row>
                 </el-form>
@@ -90,7 +74,7 @@
 
 <script>
 import DagOfRelationship from '@/components/DagOfRelationship.vue'
-import {RelationshipDefault} from '@/components/RelationshipDefault'
+import {RelationshipDefault} from '@/data/RelationshipDefault'
   export default {
     components:{
         DagOfRelationship
@@ -111,12 +95,202 @@ import {RelationshipDefault} from '@/components/RelationshipDefault'
         personName: "",
         searching: false,
         recommandList:[],
+        activeNames:[],
       };
     },
     methods: {
-      search(){
+      isFriend(name1, name2){
+        var ret = false
+        console.log(name1, name2, "is friend？")
+        this.curData.edges.forEach(edge=>{
+          if (edge.category=="friend") {
+            let src_id = edge.src_node_id
+            let dst_id = edge.dst_node_id
+            let src_name =""
+            let dst_name =""
+            this.curData.nodes.forEach((node)=>{
+              if (node.id == src_id)
+                src_name = node.name
+              if (node.id == dst_id)
+                dst_name = node.name
+            })
+            console.log(src_name == name2)
+            console.log(dst_name == name1)
+            if (src_name == name1 && dst_name == name2)
+              ret = true
+            else if (src_name == name2 && dst_name == name1) {
+              console.log(name1, name2, "is friend")
+              ret = true;
+            }
+            else {
+              console.log("real friend:", src_name, dst_name)
+              console.log("not friend:", name1, name2)
+            }
+          }
+        })
+        console.log(name1, name2, "is not friend")
+        return ret
+      },
+      processNode(node){
+        let ret = ''
+        switch(node.category) {
+          case "person":
+            ret += "共同好友"
+            break
+          case "primarySchool":
+            ret +="共同小学"
+            break
+          case "middleSchool":
+            ret +="共同中学"
+            break
+          case "college":
+            ret +="共同大学"
+            break
+          case "work":
+            ret += "共同单位"
+            break
+          case "hobby":
+            ret += "共同爱好"
+            break
+          default:
+            break
+        }
+        ret += ": "
+        ret +=node.name
+        return ret
+      },
+      onSubmit(){
         this.searching=true
-        
+        this.curData.nodes.forEach((node)=>{
+          if (node.category=="person") {
+             this.recommandList.push({
+              name: node.name,
+              commonFields:[]
+          })
+          }
+        })
+        let perosonId = ""
+        let recommandId = ""
+        let recommandName = ""
+        let middleNodeId = "" 
+        let middleNode = null
+        this.curData.nodes.forEach((node)=>{
+          if (node.name==this.personName) {
+            perosonId = node.id
+          }
+        })
+        this.curData.edges.forEach((edge)=>{
+          if (edge.src_node_id == perosonId) {
+              this.curData.edges.forEach((anotherEdge)=>{
+                if (anotherEdge.src_node_id == edge.dst_node_id){
+                  // find category through middle node
+                  middleNodeId = anotherEdge.src_node_id
+                  this.curData.nodes.forEach(node=>{
+                    if (node.id == middleNodeId) {
+                      middleNode = node
+                    }
+                  })
+                  // get the recommandNode and updata recommandList
+                  recommandId = anotherEdge.dst_node_id
+                  this.curData.nodes.forEach((node)=>{
+                    if (node.id == recommandId){
+                      recommandName = node.name
+                      this.recommandList.forEach((recommandItem)=>{
+                      if (recommandItem.name == recommandName) {
+                          recommandItem.commonFields.push(this.processNode(middleNode))
+                        }
+                      })
+                    }
+                  })
+                }
+                else if (anotherEdge.dst_node_id == edge.dst_node_id){
+                  // find category through middle node
+                  middleNodeId = anotherEdge.dst_node_id
+                  this.curData.nodes.forEach(node=>{
+                    if (node.id == middleNodeId) {
+                      middleNode = node
+                    }
+                  })
+                  // get the recommandNode and updata recommandList
+                  recommandId = anotherEdge.src_node_id
+                  this.curData.nodes.forEach((node)=>{
+                    if (node.id == recommandId){
+                      recommandName = node.name
+                      this.recommandList.forEach((recommandItem)=>{
+                      if (recommandItem.name == recommandName) {
+                          recommandItem.commonFields.push(this.processNode(middleNode))
+                        }
+                      })
+                    }
+                  })
+                }
+              })
+          }
+          if (edge.dst_node_id == perosonId) {
+              this.curData.edges.forEach((anotherEdge)=>{
+                if (anotherEdge.src_node_id == edge.src_node_id){
+                  // find category through middle node
+                  middleNodeId = anotherEdge.src_node_id
+                  this.curData.nodes.forEach(node=>{
+                    if (node.id == middleNodeId) {
+                      middleNode = node
+                    }
+                  })
+                  // get the recommandNode and updata recommandList
+                  recommandId = anotherEdge.dst_node_id
+                  this.curData.nodes.forEach((node)=>{
+                    if (node.id == recommandId){
+                      recommandName = node.name
+                      this.recommandList.forEach((recommandItem)=>{
+                      if (recommandItem.name == recommandName) {
+                          recommandItem.commonFields.push(this.processNode(middleNode))
+                        }
+                      })
+                    }
+                  })
+                }
+                else if (anotherEdge.dst_node_id == edge.src_node_id){
+                  // find category through middle node
+                  middleNodeId = anotherEdge.dst_node_id
+                  this.curData.nodes.forEach(node=>{
+                    if (node.id == middleNodeId) {
+                      middleNode = node
+                    }
+                  })
+                  // get the recommandNode and updata recommandList
+                  recommandId = anotherEdge.src_node_id
+                  this.curData.nodes.forEach((node)=>{
+                    if (node.id == recommandId){
+                      recommandName = node.name
+                      this.recommandList.forEach((recommandItem)=>{
+                      if (recommandItem.name == recommandName) {
+                          recommandItem.commonFields.push(this.processNode(middleNode))
+                        }
+                      })
+                    }
+                  })
+                }
+              })
+          }
+        })
+
+        for(let i = 0; i < this.recommandList.length; i++) {
+          if (this.recommandList[i].commonFields.length==0) {
+            this.recommandList.splice(i, 1)
+          }
+          if (this.recommandList[i].name == this.personName) {
+            this.recommandList.splice(i, 1)
+          }
+          if (this.isFriend(this.recommandList[i].name, this.personName)) {
+            this.recommandList.splice(i, 1)
+          }
+        }
+
+        this.recommandList.forEach((recommandItem)=>{
+          recommandItem.name += "  关联度：1"
+        })
+
+        console.log(JSON.stringify(this.recommandList))
       },
       chooseNetwork() {
         console.log("chooseNetWork")

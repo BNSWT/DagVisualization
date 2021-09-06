@@ -224,7 +224,7 @@
             "src_node_id":4,
             "src_output_idx":0,
             "style":{},
-            "value":4,
+            "value":10,
           },
           ]
         },
